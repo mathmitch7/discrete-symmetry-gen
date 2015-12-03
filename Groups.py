@@ -3,7 +3,24 @@
 
 from Tkinter import *
 
+class buttons:
+    def __init__(self, master):
 
+        frame = Frame(master)
+        frame.pack()
+
+        self.button = Button(frame, text="QUIT", fg="red", command=frame.quit)
+        self.button.pack(side=LEFT)
+
+        self.makeshape = Button(frame, text="Make Shape", command=self.printshape)
+        self.triangleshape = Button(frame, text="Make a Triangle", command=self.triangleshape)
+        self.makeshape.pack(side=LEFT)
+        self.triangleshape.pack(side=LEFT)
+    def printshape(self):
+        print "hi there, everyone!"
+
+    def triangleshape(self):
+        print "make a triangle"
 
 class shape():
     points=()
@@ -51,11 +68,12 @@ class MakeShapes(Frame):
 def main():
     groot = Tk()
     gps = MakeShapes(groot)
+    button = buttons(groot)
     listofshapes=[]
     listofshapes.append(shape("points", (100,20,40,40,20,10), "red"))
     listofshapes.append(shape("rectangle", (200,20,40,40), "blue"))
-    print listofshapes
-    print len(listofshapes)
+    #print listofshapes
+    #print len(listofshapes)
     for i in range(len(listofshapes)):
         MakeShapes.PlotShape(gps,listofshapes[i])
     groot.mainloop()
