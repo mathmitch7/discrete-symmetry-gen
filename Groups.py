@@ -3,6 +3,7 @@
 
 from Tkinter import *
 import random
+import math
 
 class shape():
     points=()
@@ -13,6 +14,7 @@ class shape():
         self.points = pointvector
         self.shapetype = shapetypestring
         self.color = colorstring
+        self.rotationalgen = 0
 
 class MakeShapes(Frame):
     #canvas=Canvas()
@@ -97,7 +99,7 @@ class MakeShapes(Frame):
             newxy.append(v.imag)
         self.coords(polygon_item, *newxy)
 
-    def getangle(self):
+    def getangle(self): 
         center = 200,200
         dx = self.canvasx(event.x) - center[0]
         dy = self.canvasy(event.y) - center[1]
@@ -106,11 +108,16 @@ class MakeShapes(Frame):
         except ZeroDivisionError:
             return 0.0 # cannot determine angle
 
+    def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits the number for the rotational generator
+        self.rotationalgen = 2*math.pi / n
+        return self.rotationalgen
+
 def main():
     groot = Tk()
-    gps = MakeShapes(groot)
-    #button = buttons(groot,gps)
+    grps = MakeShapes(groot)
+    #button = buttons(groot,grps)
     groot.mainloop()
+    print grps.angleofrotation(5)
 
 
 if __name__ == '__main__':
