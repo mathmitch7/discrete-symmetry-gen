@@ -28,7 +28,9 @@ class MakeShapes(Frame):
         self.makeshape = Button(frame, text="Make Shape", command=self.printshape).grid(row=5,column=0)
         self.symmetry = Button(frame, text="Make Symmetry!", command=self.symmetry).grid(row=6,column=0)
         self.clearall = Button(frame, text="Clear Shapes", command=self.clearshapes).grid(row=7,column=0)
-        self.button = Button(frame, text="QUIT", fg="red", command=frame.quit).grid(row=8,column=0)   
+        self.button = Button(frame, text="QUIT", fg="red", command=frame.quit).grid(row=8,column=0) 
+        self.grouplabel = Label(frame, text="Symmetry Group").grid(row=5,column=1)
+        self.group = Entry(frame).grid(row=5,column=2)   
 
         self.shape=StringVar()
         self.color=StringVar()
@@ -75,11 +77,33 @@ class MakeShapes(Frame):
         if shape.shapetype == "oval":
             self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2], shape.points[3], fill=shape.color)
         if shape.shapetype == "points":
-            self.canvas.create_polygon(shape.points, fill=shape.color)
+            a=random.uniform(0,400)
+            b=random.uniform(a,400)
+            c=random.randint(0,400)
+            d=random.randint(c,400)
+            self.canvas.create_polygon(shape.points,a,b,c,d, fill=shape.color)
         self.canvas.grid(row=1,column=0,columnspan=2)
 
     def symmetry(self):
         print "MAKE SYMMETRY"
+        center = 200,200
+        angle = self.getangle() / start
+        offset = complex(center[0], center[1])
+        newxy = []
+        for x, y in xy:
+            v = angle * (complex(x, y) - offset) + offset
+            newxy.append(v.real)
+            newxy.append(v.imag)
+        self.coords(polygon_item, *newxy)
+
+    def getangle(self):
+        center = 200,200
+        dx = self.canvasx(event.x) - center[0]
+        dy = self.canvasy(event.y) - center[1]
+        try:
+            return complex(dx, dy) / abs(complex(dx, dy))
+        except ZeroDivisionError:
+            return 0.0 # cannot determine angle
 
 def main():
     groot = Tk()
