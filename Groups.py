@@ -30,19 +30,29 @@ class MakeShapes(Frame):
         self.clearall = Button(frame, text="Clear Shapes", command=self.clearshapes).grid(row=7,column=0)
         self.button = Button(frame, text="QUIT", fg="red", command=frame.quit).grid(row=8,column=0) 
         self.grouplabel = Label(frame, text="Symmetry Group:").grid(row=5,column=1)
-        self.group = Entry(frame).grid(row=5,column=2)   
+        self.group = Entry(frame)
+        self.group.grid(row=5,column=2)   
 
         self.shape=StringVar()
         self.color=StringVar()
+        self.symmetrytype=StringVar()
 
-        self.triangleoption = Radiobutton(frame,variable=self.shape,text="rectangle",value="rectangle").grid(row=6,column=1,sticky=W)
-        self.ovaloption = Radiobutton(frame,variable=self.shape,text="oval",value="oval").grid(row=6,column=2,sticky=W)
-        self.polygonoption = Radiobutton(frame,variable=self.shape,text="polygon",value="points").grid(row=6,column=3,sticky=W)
-        self.blueoption = Radiobutton(frame,variable=self.color,text="blue",value="blue").grid(row=7,column=1,sticky=W)
-        self.redoption = Radiobutton(frame,variable=self.color,text="red",value="red").grid(row=7,column=2,sticky=W)
-        self.yellowoption = Radiobutton(frame,variable=self.color,text="yellow",value="yellow").grid(row=7,column=3,sticky=W)
+        self.shapelabel = Label(frame, text="Shape Type:").grid(row=6,column=1)
+        self.triangleoption = Radiobutton(frame,variable=self.shape,text="rectangle",value="rectangle").grid(row=6,column=2,sticky=W)
+        self.ovaloption = Radiobutton(frame,variable=self.shape,text="oval",value="oval").grid(row=6,column=3,sticky=W)
+        self.polygonoption = Radiobutton(frame,variable=self.shape,text="polygon",value="points").grid(row=6,column=4,sticky=W)
 
-        self.canvas = Canvas(frame, width=400, height=400,background="white")#.grid(row=2,column=0)
+        self.colorlabel = Label(frame, text="Shape Color:").grid(row=7,column=1)
+        self.blueoption = Radiobutton(frame,variable=self.color,text="blue",value="blue").grid(row=7,column=2,sticky=W)
+        self.redoption = Radiobutton(frame,variable=self.color,text="red",value="red").grid(row=7,column=3,sticky=W)
+        self.yellowoption = Radiobutton(frame,variable=self.color,text="yellow",value="yellow").grid(row=7,column=4,sticky=W)
+
+        self.symmetrylabel = Label(frame, text="Symmetry:").grid(row=8,column=1)
+        self.rotationoption = Radiobutton(frame,variable=self.symmetrytype,text="rotation",value="rotation").grid(row=8,column=2,sticky=W)
+        self.reflectionoption = Radiobutton(frame,variable=self.symmetrytype,text="reflection",value="reflection").grid(row=8,column=3,sticky=W)
+        self.completeoption = Radiobutton(frame,variable=self.symmetrytype,text="complete",value="complete").grid(row=8,column=4,sticky=W)
+
+        self.canvas = Canvas(frame, width=400, height=400,background="white")
         print self.canvas
         self.canvas.grid(row=1,column=0,columnspan=6,rowspan=4)
         self.MakeLabel(frame)   
@@ -86,25 +96,9 @@ class MakeShapes(Frame):
 
     def symmetry(self):
         print "MAKE SYMMETRY"
-        
-        center = 200,200
-        angle = self.getangle() / start
-        offset = complex(center[0], center[1])
-        newxy = []
-        for x, y in xy:
-            v = angle * (complex(x, y) - offset) + offset
-            newxy.append(v.real)
-            newxy.append(v.imag)
-        self.coords(polygon_item, *newxy)
-
-    def getangle(self):
-        center = 200,200
-        dx = self.canvasx(event.x) - center[0]
-        dy = self.canvasy(event.y) - center[1]
-        try:
-            return complex(dx, dy) / abs(complex(dx, dy))
-        except ZeroDivisionError:
-            return 0.0 # cannot determine angle
+        self.symmetrygrouptext = self.group.get()
+        print "Symmetry Group"
+        print self.symmetrygrouptext
 
 def main():
     groot = Tk()
