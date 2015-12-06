@@ -108,16 +108,23 @@ class MakeShapes(Frame):
         except ZeroDivisionError:
             return 0.0 # cannot determine angle
 
-    def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits the number for the rotational generator
+    def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
         self.rotationalgen = 2*math.pi / n
         return self.rotationalgen
+
+    def linesofsymmetry(self, n): #takes a number  of reflective symmetry we want and spits out a list of the angles of the lines of symmetry
+        self.symlines = []
+        for i in range(n):
+            self.symlines.append(i*math.pi / n)
+        return self.symlines
 
 def main():
     groot = Tk()
     grps = MakeShapes(groot)
     #button = buttons(groot,grps)
     groot.mainloop()
-    print grps.angleofrotation(5)
+
+    print grps.linesofsymmetry(5)
 
 
 if __name__ == '__main__':
