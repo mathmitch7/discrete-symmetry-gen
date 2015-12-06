@@ -29,7 +29,7 @@ class MakeShapes(Frame):
         self.symmetry = Button(frame, text="Make Symmetry!", command=self.symmetry).grid(row=6,column=0)
         self.clearall = Button(frame, text="Clear Shapes", command=self.clearshapes).grid(row=7,column=0)
         self.button = Button(frame, text="QUIT", fg="red", command=frame.quit).grid(row=8,column=0) 
-        self.grouplabel = Label(frame, text="Symmetry Group").grid(row=5,column=1)
+        self.grouplabel = Label(frame, text="Symmetry Group:").grid(row=5,column=1)
         self.group = Entry(frame).grid(row=5,column=2)   
 
         self.shape=StringVar()
@@ -86,6 +86,7 @@ class MakeShapes(Frame):
 
     def symmetry(self):
         print "MAKE SYMMETRY"
+        
         center = 200,200
         angle = self.getangle() / start
         offset = complex(center[0], center[1])
