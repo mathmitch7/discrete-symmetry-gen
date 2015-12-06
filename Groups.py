@@ -3,6 +3,7 @@
 
 from Tkinter import *
 import random
+import math
 
 class shape():
     points=()
@@ -13,6 +14,7 @@ class shape():
         self.points = pointvector
         self.shapetype = shapetypestring
         self.color = colorstring
+        self.rotationalgen = 0
 
 class MakeShapes(Frame):
     #canvas=Canvas()
@@ -100,11 +102,23 @@ class MakeShapes(Frame):
         print "Symmetry Group"
         print self.symmetrygrouptext
 
+    def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
+        self.rotationalgen = 2*math.pi / n
+        return self.rotationalgen
+
+    def linesofsymmetry(self, n): #takes a number  of reflective symmetry we want and spits out a list of the angles of the lines of symmetry
+        self.symlines = []
+        for i in range(n):
+            self.symlines.append(i*math.pi / n)
+        return self.symlines
+
 def main():
     groot = Tk()
-    gps = MakeShapes(groot)
-    #button = buttons(groot,gps)
+    grps = MakeShapes(groot)
+    #button = buttons(groot,grps)
     groot.mainloop()
+
+    print grps.linesofsymmetry(5)
 
 
 if __name__ == '__main__':
