@@ -132,22 +132,31 @@ class MakeShapes(Frame):
 
 def rotatepoints(points, theta, origin=[0,0]):
     #takes [x0,y0,x1,y1 ...], an angle in rads, and a rotational origin as [x,y], returns a list in the same style as the first.
-    for i in range(len(points)/2):
-        points[2*i] = points[2*i]-origin[0]
-        points[2*i+1] = points[2*i+1]-origin[1]
     rotatedPolygon = []
     print points[::2]
     for i in range(len(points)/2):
-        rotatedPolygon.append(points[2*i]*math.cos(theta)-points[2*i+1]*math.sin(theta)+origin[0])
-        rotatedPolygon.append(points[2*i]*math.sin(theta)+points[2*i+1]*math.cos(theta)+origin[1])
+        rotatedPolygon.append((points[2*i]-origin[0])*math.cos(theta)-(points[2*i+1]-origin[1])*math.sin(theta)+origin[0])
+        rotatedPolygon.append((points[2*i]-origin[0])*math.sin(theta)+(points[2*i+1]-origin[1])*math.cos(theta)+origin[1])
     return rotatedPolygon #this is a list btw
+
+def flippoints(points, theta, origin=[0,0]):
+    #takes [x0,y0,x1,y1 ...], an angle in rads, and a reflectional angle over which we want to reflect shit, that goes through the
+    #origin as [x,y], returns a list in the same style as the first.
+    # reflectedPolygon = []
+    # print points[::2]
+    # for i in range(len(points)/2):
+    #     reflectedPolygon.append((points[2*i]-origin[0])
+    #     rotatedPolygon.append((points[2*i]-origin[0])*math.cos(theta)-(points[2*i+1]-origin[1])*math.sin(theta)+origin[0])
+    #     rotatedPolygon.append((points[2*i]-origin[0])*math.sin(theta)+(points[2*i+1]-origin[1])*math.cos(theta)+origin[1])
+    # return rotatedPolygon #this is a list btw
+    return
 
 def main():
     groot = Tk()
     grps = MakeShapes(groot)
     #button = buttons(groot,grps)
     groot.mainloop()
-
+    print rotatepoints([110,100,120,100,130,100],math.pi/2,[100,100])
 
 if __name__ == '__main__':
     main()
