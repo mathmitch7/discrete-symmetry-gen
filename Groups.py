@@ -107,9 +107,27 @@ class MakeShapes(Frame):
 
     def symmetry(self):
         #print "MAKE SYMMETRY"
-        self.symmetrygrouptext = self.group.get()
-        #print "Symmetry Group"
-        #print self.symmetrygrouptext
+        symmetrygrouptext = self.symmetrytype.get()
+        group = self.group.get()
+        # if symmetrygrouptext == "rotation":
+        #     theta = self.angleofrotation(group)
+        #     for i in range(len(self.listofshapes)):
+        #         newshape = rotatepoints(self.listofshapes[i].points,theta,[200,200])
+                # self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color)
+        # elif symmetrygrouptext == "reflection":
+        #     linesofsymmetry = self.linesofsymmetry(group)
+        #     for i in range(len(self.listofshapes)):
+        #         newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
+        #         self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color)
+        # elif symmetrygrouptext == "complete":
+        #     theta = self.angleofrotation(group)
+        #     linesofsymmetry = self.linesofsymmetry(self)
+        #     for i in range(len(self.listofshapes)):
+        #         newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
+        #         self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color)
+        # self.listofshapes = self.findduplicates(self)
+        # for i in range(len(self.listofshapes)):
+        #     self.PlotShape(self.listofshapes[i])
 
     def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
         self.rotationalgen = 2*math.pi / n
