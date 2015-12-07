@@ -108,26 +108,30 @@ class MakeShapes(Frame):
     def symmetry(self):
         #print "MAKE SYMMETRY"
         symmetrygrouptext = self.symmetrytype.get()
-        group = self.group.get()
-        # if symmetrygrouptext == "rotation":
-        #     theta = self.angleofrotation(group)
-        #     for i in range(len(self.listofshapes)):
-        #         newshape = rotatepoints(self.listofshapes[i].points,theta,[200,200])
-                # self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color)
-        # elif symmetrygrouptext == "reflection":
-        #     linesofsymmetry = self.linesofsymmetry(group)
-        #     for i in range(len(self.listofshapes)):
-        #         newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
-        #         self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color)
-        # elif symmetrygrouptext == "complete":
-        #     theta = self.angleofrotation(group)
-        #     linesofsymmetry = self.linesofsymmetry(self)
-        #     for i in range(len(self.listofshapes)):
-        #         newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
-        #         self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color)
-        # self.listofshapes = self.findduplicates(self)
-        # for i in range(len(self.listofshapes)):
-        #     self.PlotShape(self.listofshapes[i])
+        group = int(self.group.get())
+        print self.listofshapes
+        if symmetrygrouptext == "rotation":
+            theta = self.angleofrotation(group)
+            for i in range(len(self.listofshapes)):
+                newshape = rotatepoints(self.listofshapes[i].points,theta,[200,200])
+                print newshape
+                self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+        elif symmetrygrouptext == "reflection":
+            linesofsymmetry = self.linesofsymmetry(group)
+            for i in range(len(self.listofshapes)):
+                newshape = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
+                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+        elif symmetrygrouptext == "complete":
+            theta = self.angleofrotation(group)
+            linesofsymmetry = self.linesofsymmetry(self)
+            for i in range(len(self.listofshapes)):
+                newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200]) 
+                newshape2 = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
+                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape2, self.listofshapes[i].color))
+        self.listofshapes = self.findduplicates()
+        for i in range(len(self.listofshapes)):
+            self.PlotShape(self.listofshapes[i])
 
     def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
         self.rotationalgen = 2*math.pi / n
@@ -140,11 +144,11 @@ class MakeShapes(Frame):
         return self.symlines
 
     def findduplicates(self):
-    	no_duplicates = []
-    	for i in self.listofshapes:
-    		if i not in no_duplicates:
-    			no_duplicates.append(i)
-		return no_duplicates
+        no_duplicates = []
+        for i in self.listofshapes:
+            if i not in no_duplicates:
+                no_duplicates.append(i)
+        return no_duplicates
 
 def rotatepoints(points, theta, origin=[0,0]):
     #takes [x0,y0,x1,y1 ...], an angle in rads, and a rotational origin as [x,y], returns a list in the same style as the first.
@@ -172,10 +176,6 @@ def main():
     grps = MakeShapes(groot)
     #button = buttons(groot,grps)
     groot.mainloop()
-<<<<<<< HEAD
-    print rotatepoints([110,100,120,100,130,100],math.pi/2,[100,100])
-=======
->>>>>>> 04a252671586a23ff80eb7e0dedb5a93af73f686
 
 if __name__ == '__main__':
     main()
