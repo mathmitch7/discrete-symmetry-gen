@@ -112,9 +112,9 @@ class MakeShapes(Frame):
         print self.listofshapes
         if symmetrygrouptext == "rotation":
             theta = self.angleofrotation(group)
+            print theta
             for i in range(len(self.listofshapes)):
                 newshape = rotatepoints(self.listofshapes[i].points,theta,[200,200])
-                print newshape
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
         elif symmetrygrouptext == "reflection":
             linesofsymmetry = self.linesofsymmetry(group)
@@ -126,8 +126,8 @@ class MakeShapes(Frame):
             linesofsymmetry = self.linesofsymmetry(self)
             for i in range(len(self.listofshapes)):
                 newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200]) 
-                newshape2 = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+                newshape2 = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape2, self.listofshapes[i].color))
         self.listofshapes = self.findduplicates()
         for i in range(len(self.listofshapes)):
