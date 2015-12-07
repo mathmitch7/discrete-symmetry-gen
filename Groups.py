@@ -28,57 +28,57 @@ class MakeShapes(Frame):
         self.listofshapes=[]  
 
         self.listofshapes=[]
-        self.makeshape = Button(frame, text="Make Shape", command=self.printshape).grid(row=5,column=0)
-        self.symmetry = Button(frame, text="Make Symmetry!", command=self.symmetry).grid(row=6,column=0)
-        self.clearall = Button(frame, text="Clear Shapes", command=self.clearshapes).grid(row=7,column=0)
-        self.button = Button(frame, text="QUIT", fg="red", command=frame.quit).grid(row=8,column=0) 
-        self.grouplabel = Label(frame, text="Symmetry Group:").grid(row=5,column=1)
+        self.makeshape = Button(frame, text="Make Shape", command=self.printshape,width=13).grid(row=6,column=0,sticky=W)
+        self.symmetry = Button(frame, text="Make Symmetry!", command=self.symmetry,width=13).grid(row=7,column=0,sticky=W)
+        self.clearall = Button(frame, text="Clear Shapes", command=self.clearshapes,width=13).grid(row=8,column=0,sticky=W)
+        self.button = Button(frame, text="QUIT", fg="red", command=frame.quit,width=13).grid(row=9,column=0,sticky=W) 
+        self.grouplabel = Label(frame, text="Symmetry Group:").grid(row=6,column=1)
         self.group = Entry(frame)
-        self.group.grid(row=5,column=2)   
+        self.group.grid(row=6,column=2)   
 
         self.shape=StringVar()
         self.color=StringVar()
         self.symmetrytype=StringVar()
 
-        self.shapelabel = Label(frame, text="Shape Type:").grid(row=6,column=1)
-        self.ovaloption = Radiobutton(frame,variable=self.shape,text="circle",value="circle").grid(row=6,column=3,sticky=W)
-        self.polygonoption = Radiobutton(frame,variable=self.shape,text="polygon",value="polygon").grid(row=6,column=4,sticky=W)
+        self.shapelabel = Label(frame, text="Shape Type:").grid(row=7,column=1)
+        self.ovaloption = Radiobutton(frame,variable=self.shape,text="circle",value="circle").grid(row=7,column=2,sticky=W)
+        self.polygonoption = Radiobutton(frame,variable=self.shape,text="polygon",value="polygon").grid(row=7,column=3,sticky=W)
 
-        self.colorlabel = Label(frame, text="Shape Color:").grid(row=7,column=1)
-        self.blueoption = Radiobutton(frame,variable=self.color,text="blue",value="blue").grid(row=7,column=2,sticky=W)
-        self.redoption = Radiobutton(frame,variable=self.color,text="red",value="red").grid(row=7,column=3,sticky=W)
-        self.yellowoption = Radiobutton(frame,variable=self.color,text="yellow",value="yellow").grid(row=7,column=4,sticky=W)
+        self.colorlabel = Label(frame, text="Shape Color:").grid(row=8,column=1)
+        self.blueoption = Radiobutton(frame,variable=self.color,text="blue",value="blue").grid(row=8,column=2,sticky=W)
+        self.redoption = Radiobutton(frame,variable=self.color,text="red",value="red").grid(row=8,column=3,sticky=W)
+        self.yellowoption = Radiobutton(frame,variable=self.color,text="yellow",value="yellow").grid(row=8,column=4,sticky=W)
 
-        self.symmetrylabel = Label(frame, text="Symmetry:").grid(row=8,column=1)
-        self.rotationoption = Radiobutton(frame,variable=self.symmetrytype,text="rotation",value="rotation").grid(row=8,column=2,sticky=W)
-        self.reflectionoption = Radiobutton(frame,variable=self.symmetrytype,text="reflection",value="reflection").grid(row=8,column=3,sticky=W)
-        self.completeoption = Radiobutton(frame,variable=self.symmetrytype,text="complete",value="complete").grid(row=8,column=4,sticky=W)
+        self.symmetrylabel = Label(frame, text="Symmetry:").grid(row=9,column=1)
+        self.rotationoption = Radiobutton(frame,variable=self.symmetrytype,text="rotation",value="rotation").grid(row=9,column=2,sticky=W)
+        self.reflectionoption = Radiobutton(frame,variable=self.symmetrytype,text="reflection",value="reflection").grid(row=9,column=3,sticky=W)
+        self.completeoption = Radiobutton(frame,variable=self.symmetrytype,text="complete",value="complete").grid(row=9,column=4,sticky=W)
 
         self.canvas = Canvas(frame, width=400, height=400,background="white")
-        print self.canvas
+        #print self.canvas
         self.canvas.grid(row=1,column=0,columnspan=6,rowspan=4)
         self.MakeLabel(frame)   
 
     def MakeLabel(self,frame):
-        self.label= Label(frame, text="Groups!").grid(row=0,column=0,columnspan=4)
+        self.label= Label(frame, text="Symmetry Groups!",font="Times 20 bold").grid(row=0,column=0,columnspan=4)
         #label.grid(fill=BOTH,expand=1)
 
     def clearshapes(self):
-        print "Shapes Cleared"
+        #print "Shapes Cleared"
         #ms = MakeShapes(master)
         self.canvas.delete(ALL)
         self.listofshapes=[]
 
     def printshape(self):
-        print self.shape.get()
-        print self.color.get()
+        #print self.shape.get()
+        #print self.color.get()
         points=[]
         if self.shape.get() == "circle":
             a=random.uniform(0,300)
-            b=random.uniform(a,300)
+            b=random.uniform(0,300)
             size=random.uniform(10,100)
             c=a+size
-            print c
+            #print c
             d=b+size
             points.append(a)
             points.append(b)
@@ -100,11 +100,9 @@ class MakeShapes(Frame):
     def PlotShape(self,shape):
         #print "PRINT SHAPES"
         if shape.shapetype == "circle":
-           self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2],shape.points[3], fill=shape.color)
+           self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2],shape.points[3], fill=shape.color, outline="")
         if shape.shapetype == "polygon":
-            self.canvas.create_polygon(shape.points, fill=shape.color)
-            print "points"
-            print shape.points
+            self.canvas.create_polygon(shape.points, fill=shape.color, outline="")
         self.canvas.grid(row=1,column=0,columnspan=2)
 
     def symmetry(self):
@@ -129,7 +127,7 @@ def main():
     #button = buttons(groot,grps)
     groot.mainloop()
 
-    print grps.linesofsymmetry(5)
+    #print grps.linesofsymmetry(5)
 
 
 if __name__ == '__main__':
