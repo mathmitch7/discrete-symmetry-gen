@@ -24,7 +24,8 @@ class MakeShapes(Frame):
         frame = Frame(parent)
         frame.grid()
         self.parent = parent     
-        self.parent.title("Shapes")  
+        self.parent.title("Shapes")
+        self.listofshapes=[]  
 
         self.listofshapes=[]
         self.makeshape = Button(frame, text="Make Shape", command=self.printshape).grid(row=5,column=0)
@@ -40,9 +41,8 @@ class MakeShapes(Frame):
         self.symmetrytype=StringVar()
 
         self.shapelabel = Label(frame, text="Shape Type:").grid(row=6,column=1)
-        self.triangleoption = Radiobutton(frame,variable=self.shape,text="rectangle",value="rectangle").grid(row=6,column=2,sticky=W)
-        self.ovaloption = Radiobutton(frame,variable=self.shape,text="oval",value="oval").grid(row=6,column=3,sticky=W)
-        self.polygonoption = Radiobutton(frame,variable=self.shape,text="polygon",value="points").grid(row=6,column=4,sticky=W)
+        self.ovaloption = Radiobutton(frame,variable=self.shape,text="circle",value="circle").grid(row=6,column=3,sticky=W)
+        self.polygonoption = Radiobutton(frame,variable=self.shape,text="polygon",value="polygon").grid(row=6,column=4,sticky=W)
 
         self.colorlabel = Label(frame, text="Shape Color:").grid(row=7,column=1)
         self.blueoption = Radiobutton(frame,variable=self.color,text="blue",value="blue").grid(row=7,column=2,sticky=W)
@@ -67,40 +67,51 @@ class MakeShapes(Frame):
         print "Shapes Cleared"
         #ms = MakeShapes(master)
         self.canvas.delete(ALL)
+        self.listofshapes=[]
 
     def printshape(self):
         print self.shape.get()
         print self.color.get()
-        a=random.uniform(0,400)
-        b=random.uniform(a,400)
-        c=random.randint(0,400)
-        d=random.randint(c,400)
-        self.listofshapes=[]
-        self.listofshapes.append(shape(self.shape.get(), (a,b,c,d), self.color.get()))
-        print self.listofshapes
+        points=[]
+        if self.shape.get() == "circle":
+            a=random.uniform(0,300)
+            b=random.uniform(a,300)
+            size=random.uniform(10,100)
+            c=a+size
+            print c
+            d=b+size
+            points.append(a)
+            points.append(b)
+            points.append(c)
+            points.append(d)
+        if self.shape.get() == "polygon":
+            numberofpts = random.randint(3,6)
+            for i in range(0,numberofpts):
+                a=random.uniform(0,400)
+                b=random.uniform(0,400)
+                points.append(a)
+                points.append(b)
+        self.listofshapes.append(shape(self.shape.get(), (points), self.color.get()))
+        #print self.listofshapes
         #print len(listofshapes)
         for i in range(len(self.listofshapes)):
             self.PlotShape(self.listofshapes[i])
 
     def PlotShape(self,shape):
         #print "PRINT SHAPES"
-        if shape.shapetype == "rectangle":
-            self.canvas.create_rectangle(shape.points[0], shape.points[1], shape.points[2], shape.points[3], fill=shape.color)
-        if shape.shapetype == "oval":
-            self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2], shape.points[3], fill=shape.color)
-        if shape.shapetype == "points":
-            a=random.uniform(0,400)
-            b=random.uniform(a,400)
-            c=random.randint(0,400)
-            d=random.randint(c,400)
-            self.canvas.create_polygon(shape.points,a,b,c,d, fill=shape.color)
+        if shape.shapetype == "circle":
+           self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2],shape.points[3], fill=shape.color)
+        if shape.shapetype == "polygon":
+            self.canvas.create_polygon(shape.points, fill=shape.color)
+            print "points"
+            print shape.points
         self.canvas.grid(row=1,column=0,columnspan=2)
 
     def symmetry(self):
-        print "MAKE SYMMETRY"
+        #print "MAKE SYMMETRY"
         self.symmetrygrouptext = self.group.get()
-        print "Symmetry Group"
-        print self.symmetrygrouptext
+        #print "Symmetry Group"
+        #print self.symmetrygrouptext
 
     def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
         self.rotationalgen = 2*math.pi / n
@@ -119,13 +130,23 @@ class MakeShapes(Frame):
     			no_duplicates.append(i)
 		return no_duplicates
 
+def rotatepoints(points, theta, origin=[0,0]):
+    #takes [x0,y0,x1,y1 ...], an angle in rads, and a rotational origin as [x,y], returns a list in the same style as the first.
+    for i in range(len(points)/2):
+        points[2*i] = points[2*i]-origin[0]
+        points[2*i+1] = points[2*i+1]-origin[1]
+    rotatedPolygon = []
+    print points[::2]
+    for i in range(len(points)/2):
+        rotatedPolygon.append(points[2*i]*math.cos(theta)-points[2*i+1]*math.sin(theta)+origin[0])
+        rotatedPolygon.append(points[2*i]*math.sin(theta)+points[2*i+1]*math.cos(theta)+origin[1])
+    return rotatedPolygon #this is a list btw
+
 def main():
     groot = Tk()
     grps = MakeShapes(groot)
     #button = buttons(groot,grps)
     groot.mainloop()
-
-    print grps.linesofsymmetry(5)
 
 
 if __name__ == '__main__':
