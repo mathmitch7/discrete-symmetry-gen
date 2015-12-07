@@ -112,6 +112,13 @@ class MakeShapes(Frame):
             self.symlines.append(i*math.pi / n)
         return self.symlines
 
+    def findduplicates(self):
+    	no_duplicates = []
+    	for i in self.listofshapes:
+    		if i not in no_duplicates:
+    			no_duplicates.append(i)
+		return no_duplicates
+
 def main():
     groot = Tk()
     grps = MakeShapes(groot)
