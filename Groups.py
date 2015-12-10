@@ -54,7 +54,7 @@ class MakeShapes(Frame):
         self.reflectionoption = Radiobutton(frame,variable=self.symmetrytype,text="reflection",value="reflection").grid(row=9,column=3,sticky=W)
         self.completeoption = Radiobutton(frame,variable=self.symmetrytype,text="complete",value="complete").grid(row=9,column=4,sticky=W)
 
-        self.canvas = Canvas(frame, width=400, height=400,background="white")
+        self.canvas = Canvas(frame, width=600, height=600,background="white")
         #print self.canvas
         self.canvas.grid(row=1,column=0,columnspan=6,rowspan=4)
         self.MakeLabel(frame)   
