@@ -114,9 +114,10 @@ class MakeShapes(Frame):
         if symmetrygrouptext == "rotation":
             theta = self.angleofrotation(group)
             print theta
-            for i in range(len(self.listofshapes)):
-                newshape = rotatepoints(self.listofshapes[i].points,theta,[300,300])
-                self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+            for j in range(group):
+                for i in range(len(self.listofshapes)):
+                    newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
+                    self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
 
 #HEEEERE=================================================================================
         elif symmetrygrouptext == "reflection":
@@ -124,7 +125,7 @@ class MakeShapes(Frame):
             for j in range(group):     #do for all the lines of reflection
                 for i in range(len(self.listofshapes)):
                     print "I'm reflecting " + str(self.listofshapes[i].points)
-                    newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[200,200])
+                    newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
                     print "the newshape is " + str(newshape)
                     self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
                 self.listofshapes = self.findduplicates()
@@ -141,7 +142,9 @@ class MakeShapes(Frame):
             self.PlotShape(self.listofshapes[i])
 
     def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
-        self.rotationalgen = 2*math.pi / n
+        self.rotationalgen = []
+        for i in range(n):
+            self.rotationalgen.append(i*2*math.pi / n)
         return self.rotationalgen
 
     def linesofsymmetry(self, n): #takes a number  of reflective symmetry we want and spits out a list of the angles of the lines of symmetry
@@ -149,6 +152,7 @@ class MakeShapes(Frame):
         for i in range(n):
             self.symlines.append(i*2*math.pi / n)
         return self.symlines
+
     def findduplicates(self):
         no_duplicates = []
         for i in self.listofshapes:
