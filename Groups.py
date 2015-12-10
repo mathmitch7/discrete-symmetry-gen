@@ -75,8 +75,8 @@ class MakeShapes(Frame):
         #print self.color.get()
         points=[]
         if self.shape.get() == "circle":
-            a=random.uniform(0,300)
-            b=random.uniform(0,300)
+            a=random.uniform(100,300)
+            b=random.uniform(100,300)
             size=random.uniform(10,100)
             c=a+size
             #print c
@@ -88,8 +88,8 @@ class MakeShapes(Frame):
         if self.shape.get() == "polygon":
             numberofpts = random.randint(3,6)
             for i in range(0,numberofpts):
-                a=random.uniform(0,400)
-                b=random.uniform(0,400)
+                a=random.uniform(100,400)
+                b=random.uniform(100,400)
                 points.append(a)
                 points.append(b)
         self.listofshapes.append(shape(self.shape.get(), (points), self.color.get()))
@@ -97,13 +97,14 @@ class MakeShapes(Frame):
         #print len(listofshapes)
         for i in range(len(self.listofshapes)):
             self.PlotShape(self.listofshapes[i])
+            
 
     def PlotShape(self,shape):
         #print "PRINT SHAPES"
         if shape.shapetype == "circle":
-           self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2],shape.points[3], fill=shape.color, outline="")
+            self.canvas.create_oval(shape.points[0], shape.points[1], shape.points[2],shape.points[3], fill=shape.color, outline="")
         if shape.shapetype == "polygon":
-            self.canvas.create_polygon(shape.points, fill=shape.color, outline="")
+            self.canvas.create_polygon(shape.points, fill=shape.color, outline="")                           
         self.canvas.grid(row=1,column=0,columnspan=2)
 
     def symmetry(self):
@@ -113,33 +114,54 @@ class MakeShapes(Frame):
         #print self.listofshapes
         if symmetrygrouptext == "rotation":
             theta = self.angleofrotation(group)
-            print theta
+            #print theta
             for j in range(group):
                 for i in range(len(self.listofshapes)):
                     newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
                     self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
-
+            self.listofshapes = self.findduplicates()
 #HEEEERE=================================================================================
         elif symmetrygrouptext == "reflection":
             linesofsymmetry = self.linesofsymmetry(group)
             for j in range(group):     #do for all the lines of reflection
                 for i in range(len(self.listofshapes)):
-                    print "I'm reflecting " + str(self.listofshapes[i].points)
+                    #print "I'm reflecting " + str(self.listofshapes[i].points)
                     newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
-                    print "the newshape is " + str(newshape)
+                    #print "the newshape is " + str(newshape)
                     self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
-                self.listofshapes = self.findduplicates()
+            self.listofshapes = self.findduplicates()
         elif symmetrygrouptext == "complete":
             theta = self.angleofrotation(group)
             linesofsymmetry = self.linesofsymmetry(self)
-            for i in range(len(self.listofshapes)):
-                newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[300,300]) 
-                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
-                newshape2 = flippoints(self.listofshapes[i].points,linesofsymmetry,[300,300])
-                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape2, self.listofshapes[i].color))
-        self.listofshapes = self.findduplicates()
+            for j in range(group):
+                for i in range(len(self.listofshapes)):
+                    newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
+                    self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+                    newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
+                    self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+            self.listofshapes = self.findduplicates()
+        #print self.listofshapes
+        #print range(len(self.listofshapes))
+        redshapes = []
+        blueshapes = []
+        yellowshapes = []
         for i in range(len(self.listofshapes)):
-            self.PlotShape(self.listofshapes[i])
+            print i
+            thisshape = self.listofshapes[i]
+            if thisshape.color == "red":
+                redshapes.append(self.listofshapes[i])
+            elif thisshape.color == "blue":
+                blueshapes.append(self.listofshapes[i])
+            elif thisshape.color == "yellow":
+                yellowshapes.append(self.listofshapes[i])
+            print "yellowshapes" + str(yellowshapes)
+            print "redshapes" + str(redshapes)
+        for i in range(len(redshapes)):
+            self.PlotShape(redshapes[i])
+        for i in range(len(blueshapes)):
+            self.PlotShape(blueshapes[i])
+        for i in range(len(yellowshapes)):
+            self.PlotShape(yellowshapes[i])
 
     def angleofrotation(self, n): #takes a number  of rotational symmetry we want and spits out the number for the rotational generator
         self.rotationalgen = []
@@ -185,7 +207,7 @@ def flippoints(points, theta, origin=[0,0]):
         #calculate line constants as y=mx+b
         m = math.tan(theta)
         b = origin[1] - m*origin[0] 
-        print "theta is " + str(theta)
+        #print "theta is " + str(theta)
     
         reflectedPolygon = [] #start reflected polygon list
         for i in range(len(points)/2):
