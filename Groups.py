@@ -4,6 +4,7 @@
 from Tkinter import *
 import random
 import math
+import time
 
 class shape():
     points=()
@@ -116,11 +117,20 @@ class MakeShapes(Frame):
             for i in range(len(self.listofshapes)):
                 newshape = rotatepoints(self.listofshapes[i].points,theta,[200,200])
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+
+#HEEEERE=================================================================================
         elif symmetrygrouptext == "reflection":
             linesofsymmetry = self.linesofsymmetry(group)
-            for i in range(len(self.listofshapes)):
-                newshape = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
-                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+            for j in range(group):     #do for all the lines of reflection
+                for i in range(len(self.listofshapes)):
+                    print "I'm reflecting " + str(self.listofshapes[i].points)
+                    newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[200,200])
+                    print "the newshape is " + str(newshape)
+                    self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+                self.listofshapes = self.findduplicates()
+
+#=============================================================================================================
+
         elif symmetrygrouptext == "complete":
             theta = self.angleofrotation(group)
             linesofsymmetry = self.linesofsymmetry(self)
@@ -140,9 +150,8 @@ class MakeShapes(Frame):
     def linesofsymmetry(self, n): #takes a number  of reflective symmetry we want and spits out a list of the angles of the lines of symmetry
         self.symlines = []
         for i in range(n):
-            self.symlines.append(i*math.pi / n)
+            self.symlines.append(i*2*math.pi / n)
         return self.symlines
-
     def findduplicates(self):
         no_duplicates = []
         for i in self.listofshapes:
@@ -153,23 +162,39 @@ class MakeShapes(Frame):
 def rotatepoints(points, theta, origin=[0,0]):
     #takes [x0,y0,x1,y1 ...], an angle in rads, and a rotational origin as [x,y], returns a list in the same style as the first.
     rotatedPolygon = []
-    print points[::2]
     for i in range(len(points)/2):
         rotatedPolygon.append((points[2*i]-origin[0])*math.cos(theta)-(points[2*i+1]-origin[1])*math.sin(theta)+origin[0])
         rotatedPolygon.append((points[2*i]-origin[0])*math.sin(theta)+(points[2*i+1]-origin[1])*math.cos(theta)+origin[1])
     return rotatedPolygon #this is a list btw
 
+
+#======================================================================================================================
 def flippoints(points, theta, origin=[0,0]):
-    #takes [x0,y0,x1,y1 ...], an angle in rads, and a reflectional angle over which we want to reflect shit, that goes through the
-    #origin as [x,y], returns a list in the same style as the first.
-    # reflectedPolygon = []
-    # print points[::2]
-    # for i in range(len(points)/2):
-    #     reflectedPolygon.append((points[2*i]-origin[0])
-    #     rotatedPolygon.append((points[2*i]-origin[0])*math.cos(theta)-(points[2*i+1]-origin[1])*math.sin(theta)+origin[0])
-    #     rotatedPolygon.append((points[2*i]-origin[0])*math.sin(theta)+(points[2*i+1]-origin[1])*math.cos(theta)+origin[1])
-    # return rotatedPolygon #this is a list btw
-    return
+    # takes [x0,y0,x1,y1 ...], an angle in rads, and a reflectional angle over which we want to reflect shit, that goes through the
+    # origin as [x,y], returns a list in the same style as the first.
+
+    reflectedPolygon = [] #start reflected polygon list
+    
+    if theta - math.pi/2 < 0.001:
+        print "it's the exception to the rule!"
+        for i in range(len(points)/2):
+            reflectedPolygon.append(-1 * points[2*i])
+            reflectedPolygon.append(points[2*i+1])
+    else:
+        #calculate line constants as y=mx+b
+        m = math.tan(theta)
+        b = origin[1] - m*origin[0] 
+        print "theta is " + str(theta)
+    
+        reflectedPolygon = [] #start reflected polygon list
+        for i in range(len(points)/2):
+            d = (points[2*i] + (points[2*i+1] - b)*m)/(1 + m**2)
+            reflectedPolygon.append(2*d - points[2*i])
+            reflectedPolygon.append(2*d*m - points[2*i+1] + 2*b)
+
+    return reflectedPolygon #this is a list btw
+
+#=======================================================================================================================
 
 def main():
     groot = Tk()
