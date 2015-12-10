@@ -109,25 +109,25 @@ class MakeShapes(Frame):
         #print "MAKE SYMMETRY"
         symmetrygrouptext = self.symmetrytype.get()
         group = int(self.group.get())
-        print self.listofshapes
+        #print self.listofshapes
         if symmetrygrouptext == "rotation":
             theta = self.angleofrotation(group)
             print theta
             for i in range(len(self.listofshapes)):
-                newshape = rotatepoints(self.listofshapes[i].points,theta,[200,200])
+                newshape = rotatepoints(self.listofshapes[i].points,theta,[300,300])
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
         elif symmetrygrouptext == "reflection":
             linesofsymmetry = self.linesofsymmetry(group)
             for i in range(len(self.listofshapes)):
-                newshape = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
+                newshape = flippoints(self.listofshapes[i].points,linesofsymmetry,[300,300])
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
         elif symmetrygrouptext == "complete":
             theta = self.angleofrotation(group)
             linesofsymmetry = self.linesofsymmetry(self)
             for i in range(len(self.listofshapes)):
-                newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[200,200]) 
+                newshape = rotatepoints(self.listofshapes[i].points,linesofsymmetry,[300,300]) 
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
-                newshape2 = flippoints(self.listofshapes[i].points,linesofsymmetry,[200,200])
+                newshape2 = flippoints(self.listofshapes[i].points,linesofsymmetry,[300,300])
                 self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape2, self.listofshapes[i].color))
         self.listofshapes = self.findduplicates()
         for i in range(len(self.listofshapes)):
