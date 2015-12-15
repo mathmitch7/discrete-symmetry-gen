@@ -117,18 +117,42 @@ class MakeShapes(Frame):
             #print theta
             for j in range(group):
                 for i in range(len(self.listofshapes)):
-                    newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
-                    self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+                    if self.listofshapes[i].shapetype == "circle":
+                        if group == 2:
+                            newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
+                            self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+                        elif group == 4:
+                            newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
+                            self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
+                        else:
+                            print "Please choose 2 or 4 if there is a circle on the canvas."
+                    else:
+                        newshape = rotatepoints(self.listofshapes[i].points,theta[j],[300,300])
+                        self.listofshapes.append(shape(self.listofshapes[i].shapetype, (newshape), self.listofshapes[i].color))
             self.listofshapes = self.findduplicates()
 #HEEEERE=================================================================================
         elif symmetrygrouptext == "reflection":
             linesofsymmetry = self.linesofsymmetry(group)
-            for j in range(group):     #do for all the lines of reflection
-                for i in range(len(self.listofshapes)):
-                    #print "I'm reflecting " + str(self.listofshapes[i].points)
-                    newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
-                    #print "the newshape is " + str(newshape)
-                    self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+            print "hello?"
+            if group == 4:
+                print "PLEASE NOT 4!"
+            elif group == 8:
+                print "OH GOD, NOT 8!"
+            else:
+                for j in range(group):     #do for all the lines of reflection
+                    for i in range(len(self.listofshapes)):
+                        if self.listofshapes[i].shapetype == "circle":
+                            if group == 2:
+                                newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
+                                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+                            elif group ==4:
+                                newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
+                                self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
+                            else:
+                                print "Please choose 2 or 4 if there is a circle on the canvas."
+                        else:
+                            newshape = flippoints(self.listofshapes[i].points,linesofsymmetry[j],[300,300])
+                            self.listofshapes.append(shape(self.listofshapes[i].shapetype, newshape, self.listofshapes[i].color))
             self.listofshapes = self.findduplicates()
         elif symmetrygrouptext == "complete":
             theta = self.angleofrotation(group)
